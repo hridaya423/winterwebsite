@@ -6,86 +6,7 @@
     <title>Winter Website</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes sway {
-            0%, 100% { transform: rotate(-3deg); }
-            50% { transform: rotate(3deg); }
-        }
-
-        @keyframes fall {
-            from { 
-                transform: translateY(-100vh) rotate(0deg); 
-                opacity: 1;
-            }
-            to { 
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0.6;
-            }
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.8); }
-        }
-
-        @keyframes float-up {
-            0% { transform: translateY(0) scale(1); opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { transform: translateY(-100px) scale(0.8); opacity: 0; }
-        }
-
-        @keyframes fly {
-            from { transform: translateX(-100vw) translateY(sin(0) * 30px); }
-            to { transform: translateX(100vw) translateY(sin(1) * 30px); }
-        }
-
-        .snowflake {
-            position: fixed;
-            pointer-events: none;
-            z-index: 50;
-            animation: fall linear;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
-        }
-
-        .star {
-            animation: twinkle 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 8px #ffd700);
-        }
-
-        .music-note {
-            position: absolute;
-            animation: float-up 2s ease-out forwards;
-            opacity: 0;
-        }
-
-        .santa-sleigh {
-            animation: fly 20s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
-        }
-
-        .light {
-            filter: blur(2px);
-            box-shadow: 0 0 10px currentColor;
-        }
-        .year-2025 {
-            position: relative;
-            display: inline-block;
-            font-size: 8rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #FFD700, #FFA500, #FF69B4, #87CEEB);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-            animation: float 3s ease-in-out infinite;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-slate-900 min-h-screen overflow-x-hidden">
     <div class="fixed top-4 right-4 z-50 bg-white/10 backdrop-blur-md rounded-lg p-4 text-white shadow-lg">
@@ -99,7 +20,7 @@
     </div>
     <section class="relative h-screen flex items-center justify-center text-white overflow-hidden">
         <div class="santa-sleigh">
-            <img src="https://i.pinimg.com/originals/9d/1a/8e/9d1a8eaf1df1fba32f7e746b16f6a398.png" />
+            <img src="https://i.pinimg.com/originals/9d/1a/8e/9d1a8eaf1df1fba32f7e746b16f6a398.png" alt="Santa's Sleigh" />
         </div>
         <div class="absolute inset-0 overflow-hidden">
             <div class="stars absolute inset-0"></div>
@@ -109,95 +30,9 @@
                 Merry Christmas & Happy New Year!
             </h1>
             <p class="text-xl md:text-2xl text-blue-200 mb-8">Have the best winter ❄️</p>
-            <div class="flex flex-col md:flex-row gap-4 justify-center">
-                
-                <button id="toggle-snow" class="bg-blue-500/90 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-400 transition duration-300 transform hover:scale-105 hover:shadow-lg">
-                    Stop Snow
-                </button>
-            </div>
             <div class="year-2025 mb-12">2025</div>
         </div>
-        
     </section>
-
-
-    <script>
-
-        const music = document.getElementById('christmas-music');
-        const musicToggle = document.getElementById('music-toggle');
-        let isPlaying = false;
-
-        musicToggle.addEventListener('click', () => {
-            if (isPlaying) {
-                music.pause();
-                musicToggle.innerHTML = '<span class="music-icon">🔇</span> Play Music';
-            } else {
-                music.play();
-                musicToggle.innerHTML = '<span class="music-icon">🎵</span> Pause Music';
-            }
-            isPlaying = !isPlaying;
-        });
-
-        let snowEnabled = true;
-        const toggleSnow = document.getElementById('toggle-snow');
-        
-        toggleSnow.addEventListener('click', () => {
-            snowEnabled = !snowEnabled;
-            toggleSnow.textContent = snowEnabled ? "Stop Snow" : "Start Snow";
-            toggleSnow.classList.toggle('bg-blue-500/90');
-            toggleSnow.classList.toggle('bg-gray-500/90');
-        });
-        function createSnowflake() {
-            if (!snowEnabled) return;
-            
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            snowflake.innerHTML = '❄';
-
-            const size = Math.random() * 20 + 10;
-            const startPosition = Math.random() * 100;
-            const duration = Math.random() * 3 + 2;
-            const delay = Math.random() * 2;
-            
-            Object.assign(snowflake.style, {
-                left: `${startPosition}vw`,
-                fontSize: `${size}px`,
-                animationDuration: `${duration}s`,
-                animationDelay: `${delay}s`,
-                opacity: Math.random() * 0.6 + 0.4
-            });
-            
-            document.body.appendChild(snowflake);
-            
-            setTimeout(() => snowflake.remove(), (duration + delay) * 1000);
-        }
-
-        setInterval(createSnowflake, 100);
-
-        const starsContainer = document.querySelector('.stars');
-        function createStarryBackground() {
-            starsContainer.innerHTML = '';
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
-                const size = Math.random() * 2 + 1;
-                
-                Object.assign(star.style, {
-                    position: 'absolute',
-                    width: `${size}px`,
-                    height: `${size}px`,
-                    background: 'white',
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                    boxShadow: '0 0 3px white',
-                    borderRadius: '50%',
-                    animation: `twinkle ${Math.random() * 4 + 1}s infinite`
-                });
-                
-                starsContainer.appendChild(star);
-            }
-        }
-        createStarryBackground();
-
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
